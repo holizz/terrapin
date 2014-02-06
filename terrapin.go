@@ -3,27 +3,42 @@ package terrapin
 import (
 	"image"
 	"image/color"
+	"math"
 )
 
 type Terrapin struct {
-	image *image.RGBA
-	pos image.Point
-	color color.Color
+	Image       *image.RGBA
+	Pos         Position
+	Orientation float64
+	Color       color.Color
 }
 
-func NewTerrapin(i *image.RGBA, starting image.Point) (t *Terrapin) {
+type Position struct {
+	X, Y float64
+}
+
+func NewTerrapin(i *image.RGBA, starting Position) (t *Terrapin) {
 	t = &Terrapin{
-		image: i,
-		pos: starting,
-		color: color.Black,
+		Image:       i,
+		Pos:         starting,
+		Orientation: 0.0,
+		Color:       color.Black,
 	}
 
 	return
 }
 
-func (t *Terrapin) Forward(dist int) {
-	for i := 0; i < dist; i++ {
-		t.image.Set(t.pos.X, t.pos.Y, t.color)
-		t.pos = t.pos.Add(image.Pt(0, 1))
+func (t *Terrapin) Forward(dist float64) {
+	for i := 0; i < int(dist); i++ {
+		t.Image.Set(int(t.Pos.X), int(t.Pos.Y), t.Color)
+
+		x := 1.0 * math.Sin(t.Orientation)
+		y := 1.0 * -math.Cos(t.Orientation)
+
+		t.Pos = Position{t.Pos.X + x, t.Pos.Y + y}
 	}
+}
+
+func (t *Terrapin) Right(radians float64) {
+	t.Orientation += radians
 }

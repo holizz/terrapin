@@ -6,6 +6,7 @@ import (
 	"github.com/martini-contrib/render"
 	"image"
 	"image/png"
+	"math"
 	"net/http"
 )
 
@@ -21,9 +22,13 @@ func main() {
 	m.Get("/example1.png", func(w http.ResponseWriter) {
 		i := image.NewRGBA(image.Rect(0, 0, 300, 300))
 
-		t := terrapin.NewTerrapin(i, image.Pt(150, 150))
+		t := terrapin.NewTerrapin(i, terrapin.Position{150.0, 150.0})
 
 		t.Forward(20)
+		t.Right(math.Pi * 1/2)
+		t.Forward(20)
+		t.Right(math.Pi * 3/4)
+		t.Forward(math.Hypot(20, 20))
 
 		png.Encode(w, i)
 	})
