@@ -43,8 +43,16 @@ func (t *Terrapin) Forward(dist float64) {
 	}
 }
 
+func (t *Terrapin) Backward(dist float64) {
+	t.Forward(-dist)
+}
+
 func (t *Terrapin) Right(radians float64) {
 	t.Orientation += radians
+}
+
+func (t *Terrapin) Left(radians float64) {
+	t.Right(-radians)
 }
 
 func (t *Terrapin) PenUp() {

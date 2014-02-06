@@ -71,7 +71,7 @@ func poly(t *terrapin.Terrapin, size float64, sides int) {
 
 	// Get back to where we started
 	t.PenUp()
-	t.Right(-(math.Pi/2 + exterior/2))
-	t.Forward(size / -2)
+	t.Left(math.Pi/2 + exterior/2)
+	t.Backward(size / 2)
 	t.PenDown()
 }
