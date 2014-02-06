@@ -11,6 +11,7 @@ type Terrapin struct {
 	Pos         Position
 	Orientation float64
 	Color       color.Color
+	Pen         bool
 }
 
 type Position struct {
@@ -23,6 +24,7 @@ func NewTerrapin(i *image.RGBA, starting Position) (t *Terrapin) {
 		Pos:         starting,
 		Orientation: 0.0,
 		Color:       color.Black,
+		Pen:         true,
 	}
 
 	return
@@ -30,7 +32,9 @@ func NewTerrapin(i *image.RGBA, starting Position) (t *Terrapin) {
 
 func (t *Terrapin) Forward(dist float64) {
 	for i := 0; i < int(dist); i++ {
-		t.Image.Set(int(t.Pos.X), int(t.Pos.Y), t.Color)
+		if t.Pen {
+			t.Image.Set(int(t.Pos.X), int(t.Pos.Y), t.Color)
+		}
 
 		x := 1.0 * math.Sin(t.Orientation)
 		y := 1.0 * -math.Cos(t.Orientation)
@@ -41,4 +45,12 @@ func (t *Terrapin) Forward(dist float64) {
 
 func (t *Terrapin) Right(radians float64) {
 	t.Orientation += radians
+}
+
+func (t *Terrapin) PenUp() {
+	t.Pen = false
+}
+
+func (t *Terrapin) PenDown() {
+	t.Pen = true
 }

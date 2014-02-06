@@ -28,9 +28,9 @@ func main() {
 
 		// Triangle
 		t.Forward(s)
-		t.Right(math.Pi * 1/2)
+		t.Right(math.Pi * 1 / 2)
 		t.Forward(s)
-		t.Right(math.Pi * 3/4)
+		t.Right(math.Pi * 3 / 4)
 		t.Forward(math.Hypot(s, s))
 
 		png.Encode(w, i)
@@ -53,13 +53,15 @@ func main() {
 }
 
 func poly(t *terrapin.Terrapin, size float64, sides int) {
-	totalInterior := math.Pi * float64(sides - 2)
+	totalInterior := math.Pi * float64(sides-2)
 	interior := totalInterior / float64(sides)
 	exterior := math.Pi - interior
 
 	// Get into position
+	t.PenUp()
 	t.Forward(size / 2)
-	t.Right(math.Pi / 2 + exterior / 2)
+	t.Right(math.Pi/2 + exterior/2)
+	t.PenDown()
 
 	// Draw it
 	for i := 0; i < sides; i++ {
@@ -68,6 +70,8 @@ func poly(t *terrapin.Terrapin, size float64, sides int) {
 	}
 
 	// Get back to where we started
-	t.Right(-(math.Pi / 2 + exterior / 2))
+	t.PenUp()
+	t.Right(-(math.Pi/2 + exterior/2))
 	t.Forward(size / -2)
+	t.PenDown()
 }
