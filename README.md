@@ -19,7 +19,7 @@
 
 To see a couple of little examples:
 
-    go get github.com/holizz/terrapin/...
+    go get github.com/holizz/terrapin
     go run $GOPATH/src/github.com/holizz/terrapin/example/main.go
 
 ## License
