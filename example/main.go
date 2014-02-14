@@ -1,25 +1,28 @@
 package main
 
 import (
-	"github.com/codegangsta/martini"
+	"fmt"
 	"github.com/holizz/terrapin"
-	"github.com/martini-contrib/render"
 	"image"
 	"image/png"
+	"log"
 	"math"
 	"net/http"
 )
 
 func main() {
-	m := martini.Classic()
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(`
+			<!doctype html>
+			<title>Terrapin example</title>
+			<h1>Terrapin example</h1>
 
-	m.Use(render.Renderer())
-
-	m.Get("/", func(r render.Render) {
-		r.HTML(200, "index", nil)
+			<img src="/example1.png">
+			<img src="/example2.png">
+		`))
 	})
 
-	m.Get("/example1.png", func(w http.ResponseWriter) {
+	http.HandleFunc("/example1.png", func(w http.ResponseWriter, r *http.Request) {
 		i := image.NewRGBA(image.Rect(0, 0, 300, 300))
 
 		t := terrapin.NewTerrapin(i, terrapin.Position{150.0, 150.0})
@@ -36,7 +39,7 @@ func main() {
 		png.Encode(w, i)
 	})
 
-	m.Get("/example2.png", func(w http.ResponseWriter) {
+	http.HandleFunc("/example2.png", func(w http.ResponseWriter, r *http.Request) {
 		i := image.NewRGBA(image.Rect(0, 0, 300, 300))
 
 		t := terrapin.NewTerrapin(i, terrapin.Position{150.0, 150.0})
@@ -49,7 +52,8 @@ func main() {
 		png.Encode(w, i)
 	})
 
-	m.Run()
+	fmt.Println("Listening on http://localhost:3000")
+	log.Fatalln(http.ListenAndServe(":3000", nil))
 }
 
 func poly(t *terrapin.Terrapin, size float64, sides int) {
